@@ -1,6 +1,10 @@
+import 'package:alif_test/app_bloc_observer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  Bloc.observer = AppBlocObserver();
   runApp(const MyApp());
 }
 
