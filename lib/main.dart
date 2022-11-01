@@ -1,7 +1,7 @@
 import 'package:alif_test/app_bloc_observer.dart';
-
+import 'package:alif_test/core/navigation/app_routes.dart';
+import 'package:alif_test/core/navigation/routes.dart';
 import 'package:alif_test/features/top_headlines/ui/bloc/top_headline/top_headlines_bloc.dart';
-import 'package:alif_test/features/top_headlines/ui/screens/top_headlines_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:alif_test/core/injector_container/injector_container.dart'
@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         child: const MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
-            home: TopHeadlinesScreen()));
+            onGenerateRoute: AppRoutes.generateRoute,
+            initialRoute: Routes.topHeadlines));
   }
 }
