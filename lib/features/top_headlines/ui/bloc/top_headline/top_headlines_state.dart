@@ -6,9 +6,9 @@ abstract class TopHeadlinesState {}
 class TopHeadlinesInitial extends TopHeadlinesState {}
 
 class TopHeadlinesError extends TopHeadlinesState {
-  final String errorMessage;
+  final Failure failure;
 
-  TopHeadlinesError({required this.errorMessage});
+  TopHeadlinesError({required this.failure});
 }
 
 class TopHeadlinesSuccess extends TopHeadlinesState {

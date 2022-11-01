@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:alif_test/core/database/database.dart';
+import 'package:alif_test/core/network/dio_exceptions.dart';
 import 'package:alif_test/core/utils/extensions.dart';
 import 'package:alif_test/features/top_headlines/ui/bloc/top_headline/top_headlines_bloc.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +17,6 @@ class TopHeadlinesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('width: ${MediaQuery.of(context).size.width} & height: ${MediaQuery.of(context).size.height}');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -47,7 +47,9 @@ class TopHeadlinesScreen extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(state.errorMessage,
+                  Text(
+                      MapFailureToLocalizationResource.fromFailure(
+                          context, state.failure),
                       style: const TextStyle(color: Colors.red)),
                   SizedBox(height: context.appHeight * 20.h)
                 ],

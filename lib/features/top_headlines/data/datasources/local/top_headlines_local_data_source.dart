@@ -1,10 +1,7 @@
 import 'dart:developer';
-
 import 'package:alif_test/core/database/database.dart';
-import 'package:alif_test/core/database/tables.dart';
 import 'package:alif_test/features/top_headlines/data/model/top_headlines_model.dart';
 import 'package:drift/drift.dart';
-import 'package:get_it/get_it.dart';
 
 abstract class TopHeadlinesLocalDataSource {
   Future<List<Article>> getLatestNews();

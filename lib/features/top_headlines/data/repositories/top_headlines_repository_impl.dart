@@ -1,11 +1,13 @@
-import 'package:alif_test/core/error/exception.dart';
+  import 'package:alif_test/core/error/exception.dart';
 import 'package:alif_test/core/error/failure.dart';
+import 'package:alif_test/core/network/dio_exceptions.dart';
 import 'package:alif_test/core/network/network_info.dart';
 import 'package:alif_test/features/top_headlines/data/datasources/local/top_headlines_local_data_source.dart';
 import 'package:alif_test/features/top_headlines/data/datasources/remote/top_headlines_repository.dart';
 import 'package:alif_test/features/top_headlines/domain/entities/top_headlines.dart';
 import 'package:alif_test/features/top_headlines/domain/repositories/top_headlines_repository.dart';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 
 class TopHeadlinesRepositoryImpl implements TopHeadlinesRepository {
   final TopHeadlinesLocalDataSource topHeadlinesLocalDataSource;
@@ -33,8 +35,10 @@ class TopHeadlinesRepositoryImpl implements TopHeadlinesRepository {
           topHeadlines.add(headlines);
         }
         return Right(topHeadlines);
-      } on ServerException {
-        return Left(ServerFailure());
+      } on DioError catch (error) {
+        return Left(DioExceptions.fromDioError(error));
+      } catch (error) {
+        return Left(SomethingWentWrongFailure());
       }
     } else {
       try {
@@ -49,7 +53,11 @@ class TopHeadlinesRepositoryImpl implements TopHeadlinesRepository {
               urlToWeb: item.url ?? "");
           topHeadlines.add(headlines);
         }
-        return Right(topHeadlines);
+        if (localTopHeadline.isEmpty) {
+          return Left(DioOtherFailure());
+        } else {
+          return Right(topHeadlines);
+        }
       } on CacheException {
         return Left(CacheFailure());
       }

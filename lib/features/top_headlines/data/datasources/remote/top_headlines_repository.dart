@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:alif_test/core/network/dio_helper.dart';
 import 'package:alif_test/core/utils/constants.dart';
 import 'package:alif_test/features/top_headlines/data/datasources/local/top_headlines_local_data_source.dart';
 import 'package:alif_test/features/top_headlines/data/model/top_headlines_model.dart';
-import 'package:get_it/get_it.dart';
 
 abstract class TopHeadlineRemoteDataSource {
   Future<TopHeadlineModel> getTopHeadlines(int page);

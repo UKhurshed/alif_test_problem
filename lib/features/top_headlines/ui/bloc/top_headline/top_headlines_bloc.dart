@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:alif_test/core/error/failure.dart';
 import 'package:alif_test/features/top_headlines/domain/entities/top_headlines.dart';
 import 'package:alif_test/features/top_headlines/domain/usecases/getLatestTopHeadlinesNews.dart';
 import 'package:bloc/bloc.dart';
@@ -17,15 +18,13 @@ class TopHeadlinesBloc extends Bloc<TopHeadlinesEvent, TopHeadlinesState> {
       if (currentState is TopHeadlinesInitial) {
         final result =
             await getLatestTopHeadlinesNews.call(TopHeadlinesParams(page: 0));
-        result.fold(
-            (error) => emit(TopHeadlinesError(errorMessage: error.toString())),
+        result.fold((error) => emit(TopHeadlinesError(failure: error)),
             (success) => emit(TopHeadlinesSuccess(articles: success, page: 0)));
       } else if (currentState is TopHeadlinesSuccess) {
         int currentPage = currentState.page;
         final newResult = await getLatestTopHeadlinesNews
             .call(TopHeadlinesParams(page: currentPage++));
-        newResult.fold(
-            (error) => emit(TopHeadlinesError(errorMessage: error.toString())),
+        newResult.fold((error) => emit(TopHeadlinesError(failure: error)),
             (success) {
           success.isEmpty
               ? emit(currentState.copyWith(success))
@@ -39,3 +38,28 @@ class TopHeadlinesBloc extends Bloc<TopHeadlinesEvent, TopHeadlinesState> {
 
   final GetLatestTopHeadlinesNews getLatestTopHeadlinesNews;
 }
+
+/*
+
+class ServerFailure extends Failure {}
+
+class CacheFailure extends Failure {}
+
+class CancelFailure extends Failure {}
+
+class ConnectTimeOut extends Failure {}
+
+class DioOtherFailure extends Failure {}
+
+class ReceiveTimeOutFailure extends Failure {}
+
+class SendTimeOutFailure extends Failure {}
+
+class BadRequestFailure extends Failure {}
+
+class NotFoundFailure extends Failure {}
+
+class SomethingWentWrongFailure extends Failure {}
+
+class NoInternetConnectionFailure extends Failure {}
+ */
