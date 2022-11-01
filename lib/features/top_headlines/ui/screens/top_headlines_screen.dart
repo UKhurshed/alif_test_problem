@@ -1,9 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:alif_test/core/database/database.dart';
-import 'package:alif_test/features/top_headlines/data/local/top_headlines_local.dart';
-import 'package:alif_test/features/top_headlines/data/model/top_headlines_model.dart';
+import 'package:alif_test/features/top_headlines/domain/entities/top_headlines.dart';
 import 'package:alif_test/features/top_headlines/ui/bloc/top_headline/top_headlines_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,8 +16,6 @@ class TopHeadlinesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TopHeadlinesLocalSource topHeadlinesLocalSource =
-        TopHeadlinesLocalSource();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -29,7 +25,7 @@ class TopHeadlinesScreen extends StatelessWidget {
             padding: const EdgeInsets.only(right: 10),
             child: GestureDetector(
                 onTap: () async {
-                  await topHeadlinesLocalSource.getLatestNews();
+
                 },
                 child: const Icon(Icons.read_more)),
           ),
@@ -83,7 +79,7 @@ class TopHeadlinesSuccessWidget extends StatefulWidget {
   const TopHeadlinesSuccessWidget({Key? key, required this.articles})
       : super(key: key);
 
-  final List<Article> articles;
+  final List<TopHeadlines> articles;
 
   @override
   State<TopHeadlinesSuccessWidget> createState() =>
@@ -170,7 +166,7 @@ class BottomLoader extends StatelessWidget {
 class TopHeadlineImage extends StatelessWidget {
   const TopHeadlineImage({Key? key, required this.imageUrl}) : super(key: key);
 
-  final String? imageUrl;
+  final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +181,7 @@ class TopHeadlineImage extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: CachedNetworkImage(
-            imageUrl: imageUrl ?? "",
+            imageUrl: imageUrl,
             fit: BoxFit.fitHeight,
             errorWidget: (context, error, stack) {
               return SizedBox(
@@ -206,8 +202,8 @@ class TitleAndDescription extends StatelessWidget {
       {Key? key, required this.title, required this.description})
       : super(key: key);
 
-  final String? title;
-  final String? description;
+  final String title;
+  final String description;
 
   @override
   Widget build(BuildContext context) {
@@ -216,13 +212,13 @@ class TitleAndDescription extends StatelessWidget {
         padding: const EdgeInsets.only(top: 12, right: 10, bottom: 10),
         child: Column(
           children: [
-            Text(title ?? "",
+            Text(title,
                 maxLines: 1,
                 style: const TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
             Expanded(
                 child: Text(
-              description ?? "",
+              description,
               maxLines: 4,
             ))
           ],

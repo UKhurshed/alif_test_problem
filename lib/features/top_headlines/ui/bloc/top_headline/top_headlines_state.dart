@@ -12,11 +12,11 @@ class TopHeadlinesError extends TopHeadlinesState {
 }
 
 class TopHeadlinesSuccess extends TopHeadlinesState {
-  final List<Article> articles;
+  final List<TopHeadlines> articles;
   final int page;
 
   TopHeadlinesSuccess({required this.articles, required this.page});
 
-  TopHeadlinesSuccess copyWith(List<Article> articles) =>
+  TopHeadlinesSuccess copyWith(List<TopHeadlines> articles) =>
       TopHeadlinesSuccess(articles: articles, page: page);
 }

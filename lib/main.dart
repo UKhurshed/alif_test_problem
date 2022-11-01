@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:alif_test/core/injector_container/injector_container.dart'
     as di;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get_it/get_it.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
         providers: [
-          BlocProvider(create: (_) => TopHeadlinesBloc()),
+          BlocProvider(create: (_) => GetIt.I.get<TopHeadlinesBloc>()),
         ],
         child: const MaterialApp(
             localizationsDelegates: AppLocalizations.localizationsDelegates,

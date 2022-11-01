@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:alif_test/features/top_headlines/data/model/top_headlines_model.dart';
-import 'package:alif_test/features/top_headlines/data/repository/top_headlines_repository.dart';
+import 'package:alif_test/features/top_headlines/domain/entities/top_headlines.dart';
+import 'package:alif_test/features/top_headlines/domain/usecases/getLatestTopHeadlinesNews.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 
@@ -10,28 +10,32 @@ part 'top_headlines_event.dart';
 part 'top_headlines_state.dart';
 
 class TopHeadlinesBloc extends Bloc<TopHeadlinesEvent, TopHeadlinesState> {
-  TopHeadlinesBloc() : super(TopHeadlinesInitial()) {
+  TopHeadlinesBloc({required this.getLatestTopHeadlinesNews})
+      : super(TopHeadlinesInitial()) {
     on<GetTopHeadlines>((event, emit) async {
-      try {
-        final currentState = state;
-        if (currentState is TopHeadlinesInitial) {
-          final result = await _topHeadlineRepository.getTopHeadlines(0);
-          emit(TopHeadlinesSuccess(articles: result.articles, page: 0));
-        } else if (currentState is TopHeadlinesSuccess) {
-          int currentPage = currentState.page;
-          final newResult =
-              await _topHeadlineRepository.getTopHeadlines(currentPage++);
-          newResult.articles.isEmpty
-              ? emit(currentState.copyWith(newResult.articles))
+      final currentState = state;
+      if (currentState is TopHeadlinesInitial) {
+        final result =
+            await getLatestTopHeadlinesNews.call(TopHeadlinesParams(page: 0));
+        result.fold(
+            (error) => emit(TopHeadlinesError(errorMessage: error.toString())),
+            (success) => emit(TopHeadlinesSuccess(articles: success, page: 0)));
+      } else if (currentState is TopHeadlinesSuccess) {
+        int currentPage = currentState.page;
+        final newResult = await getLatestTopHeadlinesNews
+            .call(TopHeadlinesParams(page: currentPage++));
+        newResult.fold(
+            (error) => emit(TopHeadlinesError(errorMessage: error.toString())),
+            (success) {
+          success.isEmpty
+              ? emit(currentState.copyWith(success))
               : emit(TopHeadlinesSuccess(
-                  articles: currentState.articles + newResult.articles,
+                  articles: currentState.articles + success,
                   page: currentPage));
-        }
-      } catch (error) {
-        emit(TopHeadlinesError(errorMessage: error.toString()));
+        });
       }
     });
   }
 
-  final TopHeadlineRepository _topHeadlineRepository = TopHeadlineRepository();
+  final GetLatestTopHeadlinesNews getLatestTopHeadlinesNews;
 }
