@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:alif_test/core/utils/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,8 +12,8 @@ class BottomLoader extends StatelessWidget {
       alignment: Alignment.center,
       child: Center(
         child: SizedBox(
-          width: 50,
-          height: 50,
+          width: context.appWidth * 50.w,
+          height: context.appHeight * 50.h,
           child: Center(
               child: Platform.isIOS
                   ? const CupertinoActivityIndicator()

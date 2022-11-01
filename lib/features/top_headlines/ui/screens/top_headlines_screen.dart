@@ -1,5 +1,7 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:alif_test/core/database/database.dart';
+import 'package:alif_test/core/utils/extensions.dart';
 import 'package:alif_test/features/top_headlines/ui/bloc/top_headline/top_headlines_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +16,7 @@ class TopHeadlinesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('width: ${MediaQuery.of(context).size.width} & height: ${MediaQuery.of(context).size.height}');
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -21,7 +24,7 @@ class TopHeadlinesScreen extends StatelessWidget {
         title: Text(AppLocalizations.of(context)!.title),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 20),
+            padding: EdgeInsets.only(right: context.appWidth * 20.w),
             child: GestureDetector(
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) =>
@@ -46,12 +49,7 @@ class TopHeadlinesScreen extends StatelessWidget {
                 children: [
                   Text(state.errorMessage,
                       style: const TextStyle(color: Colors.red)),
-                  const SizedBox(height: 20),
-                  // InkWell(
-                  //   onTap: () =>
-                  //       context.read<TopHeadlinesCubit>().reloadTopHeadlines(),
-                  //   child: const Icon(Icons.refresh),
-                  // )
+                  SizedBox(height: context.appHeight * 20.h)
                 ],
               ),
             );

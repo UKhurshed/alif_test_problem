@@ -1,3 +1,4 @@
+import 'package:alif_test/core/utils/extensions.dart';
 import 'package:flutter/material.dart';
 
 class TitleAndDescription extends StatelessWidget {
@@ -12,13 +13,16 @@ class TitleAndDescription extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(top: 12, right: 10, bottom: 10),
+        padding: EdgeInsets.only(
+            top: context.appHeight * 12.h,
+            right: context.appWidth * 10.w,
+            bottom: context.appWidth * 10.w),
         child: Column(
           children: [
             Text(title,
                 maxLines: 1,
                 style: const TextStyle(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
+            SizedBox(height: context.appHeight * 10.h),
             Expanded(
                 child: Text(
               description,

@@ -1,4 +1,5 @@
 import 'package:alif_test/core/navigation/routes.dart';
+import 'package:alif_test/core/utils/extensions.dart';
 import 'package:alif_test/features/top_headlines/domain/entities/top_headlines.dart';
 import 'package:alif_test/features/top_headlines/ui/bloc/top_headline/top_headlines_bloc.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class _ListOfTopHeadlinesState extends State<ListOfTopHeadlines> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: EdgeInsets.only(top: context.appHeight * 10.h),
       child: ListView.separated(
         controller: _scrollController,
         itemCount: widget.articles.length + 1,
@@ -49,13 +50,13 @@ class _ListOfTopHeadlinesState extends State<ListOfTopHeadlines> {
                 Routes.topHeadlinesUrlToWeb,
                 arguments: item.urlToWeb),
             child: Container(
-              height: 120,
+              height: context.appHeight * 120.h,
               decoration:
                   BoxDecoration(border: Border.all(color: Colors.black26)),
               child: Row(
                 children: [
                   TopHeadlineImage(imageUrl: item.urlToImage),
-                  const SizedBox(width: 20),
+                  SizedBox(width: context.appWidth * 20.w),
                   TitleAndDescription(
                       title: item.title, description: item.description)
                 ],
@@ -64,7 +65,7 @@ class _ListOfTopHeadlinesState extends State<ListOfTopHeadlines> {
           );
         },
         separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(height: 8);
+          return SizedBox(height: context.appHeight * 8.h);
         },
       ),
     );
