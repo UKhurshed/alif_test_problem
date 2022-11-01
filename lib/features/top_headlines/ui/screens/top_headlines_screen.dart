@@ -1,8 +1,11 @@
+import 'package:alif_test/core/database/database.dart';
 import 'package:alif_test/features/top_headlines/data/model/top_headlines_model.dart';
 import 'package:alif_test/features/top_headlines/ui/cubit/top_headlines_cubit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:drift_db_viewer/drift_db_viewer.dart';
 
 class TopHeadlinesScreen extends StatelessWidget {
   const TopHeadlinesScreen({Key? key}) : super(key: key);
@@ -11,6 +14,15 @@ class TopHeadlinesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        actions: [
+          GestureDetector(
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) =>
+                      DriftDbViewer(GetIt.I.get<NewsDatabase>()))),
+              child: const Icon(Icons.book))
+        ],
+      ),
       body: SafeArea(child: BlocBuilder<TopHeadlinesCubit, TopHeadlinesState>(
         builder: (context, state) {
           if (state is TopHeadlinesInitial) {
@@ -101,12 +113,12 @@ class TopHeadlineImage extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           child: CachedNetworkImage(
             imageUrl: imageUrl ?? "",
-            fit: BoxFit.fill,
+            fit: BoxFit.fitHeight,
             errorWidget: (context, error, stack) {
-              return const SizedBox(
+              return SizedBox(
                 width: 90,
                 height: 90,
-                child: Icon(Icons.error),
+                child: Image.asset('assets/images/default_img.png'),
               );
             },
           ),
