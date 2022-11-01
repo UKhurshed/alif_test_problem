@@ -17,13 +17,9 @@ class TopHeadlinesScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(AppLocalizations.of(context)!.title),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: GestureDetector(
-                onTap: () async {}, child: const Icon(Icons.read_more)),
-          ),
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: GestureDetector(

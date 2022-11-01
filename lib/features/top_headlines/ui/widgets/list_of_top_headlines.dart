@@ -1,3 +1,4 @@
+import 'package:alif_test/core/navigation/routes.dart';
 import 'package:alif_test/features/top_headlines/domain/entities/top_headlines.dart';
 import 'package:alif_test/features/top_headlines/ui/bloc/top_headline/top_headlines_bloc.dart';
 import 'package:flutter/material.dart';
@@ -12,8 +13,7 @@ class ListOfTopHeadlines extends StatefulWidget {
   final List<TopHeadlines> articles;
 
   @override
-  State<ListOfTopHeadlines> createState() =>
-      _ListOfTopHeadlinesState();
+  State<ListOfTopHeadlines> createState() => _ListOfTopHeadlinesState();
 }
 
 class _ListOfTopHeadlinesState extends State<ListOfTopHeadlines> {
@@ -44,17 +44,22 @@ class _ListOfTopHeadlinesState extends State<ListOfTopHeadlines> {
             return const BottomLoader();
           }
           final item = widget.articles[index];
-          return Container(
-            height: 120,
-            decoration:
-                BoxDecoration(border: Border.all(color: Colors.black26)),
-            child: Row(
-              children: [
-                TopHeadlineImage(imageUrl: item.urlToImage),
-                const SizedBox(width: 20),
-                TitleAndDescription(
-                    title: item.title, description: item.description)
-              ],
+          return InkWell(
+            onTap: () => Navigator.of(context).pushNamed(
+                Routes.topHeadlinesUrlToWeb,
+                arguments: item.urlToWeb),
+            child: Container(
+              height: 120,
+              decoration:
+                  BoxDecoration(border: Border.all(color: Colors.black26)),
+              child: Row(
+                children: [
+                  TopHeadlineImage(imageUrl: item.urlToImage),
+                  const SizedBox(width: 20),
+                  TitleAndDescription(
+                      title: item.title, description: item.description)
+                ],
+              ),
             ),
           );
         },
