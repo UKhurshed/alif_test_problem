@@ -17,9 +17,9 @@ class TopHeadlinesBloc extends Bloc<TopHeadlinesEvent, TopHeadlinesState> {
       final currentState = state;
       if (currentState is TopHeadlinesInitial) {
         final result =
-            await getLatestTopHeadlinesNews.call(TopHeadlinesParams(page: 0));
+            await getLatestTopHeadlinesNews.call(TopHeadlinesParams(page: 1));
         result.fold((error) => emit(TopHeadlinesError(failure: error)),
-            (success) => emit(TopHeadlinesSuccess(articles: success, page: 0)));
+            (success) => emit(TopHeadlinesSuccess(articles: success, page: 1)));
       } else if (currentState is TopHeadlinesSuccess) {
         int currentPage = currentState.page;
         final newResult = await getLatestTopHeadlinesNews
