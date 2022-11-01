@@ -12,7 +12,7 @@ class TopHeadlineRepository {
 
   Future<TopHeadlineModel> getTopHeadlines(int page) async {
     final response = await API().dio.get(
-        '/top-headlines?apiKey=${NewsAPI.apiKey}&page=$page&pageSize=10&category=general');
+        '/top-headlines?apiKey=${NewsAPI.apiKey}&page=$page&pageSize=7&category=general');
     log('Response: $response');
     final result = TopHeadlineModel.fromJson(response.data);
     await _topHeadlinesLocalSource.deletePage(page);

@@ -1,13 +1,34 @@
 import 'dart:developer';
 
 import 'package:alif_test/core/database/database.dart';
+import 'package:alif_test/core/database/tables.dart';
 import 'package:alif_test/features/top_headlines/data/model/top_headlines_model.dart';
+import 'package:drift/drift.dart';
 import 'package:get_it/get_it.dart';
 
 class TopHeadlinesLocalSource {
   final NewsDatabase _db = GetIt.I.get<NewsDatabase>();
 
-  Future<void> getLatestNews() async {}
+  Future<void> getLatestNews() async {
+    final topHeadlinesDb = await _db.select(_db.topHeadlinesDatabase).get();
+    for (var topElement in topHeadlinesDb) {
+      await _getArticleByPage(topElement.page);
+    }
+  }
+
+  Future<void> _getArticleByPage(String page) async {
+    List<QueryRow> articleElement = await _selectArticleByPage(page).get();
+    for (var articleItem in articleElement) {
+      log('item: ${articleItem.data}');
+    }
+  }
+
+  Selectable<QueryRow> _selectArticleByPage(String page) {
+    return _db.customSelect(
+        'SELECT * FROM article_database WHERE article_database.page = ?1',
+        readsFrom: {_db.articleDatabase},
+        variables: [Variable.withString(page)]);
+  }
 
   Future<void> insertTopHeadlines(int page, List<Article> articles) async {
     try {
